@@ -14,4 +14,14 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CopyFileToFolders Include="SDL\SDL2\SDL2.dll" />
+    <CopyFileToFolders Include="SDL\SDL2_image\SDL2_image.dll" />
+    <CopyFileToFolders Include="SDL\SDL2_ttf\SDL2_ttf.dll" />
+  </ItemGroup>
 </Project>
