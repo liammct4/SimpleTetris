@@ -21,6 +21,9 @@
     <CopyFileToFolders Include="SDL\SDL2\SDL2.dll" />
     <CopyFileToFolders Include="SDL\SDL2_image\SDL2_image.dll" />
     <CopyFileToFolders Include="SDL\SDL2_ttf\SDL2_ttf.dll" />
+    <CopyFileToFolders Include="Tile.png">
+      <Filter>Resource Files</Filter>
+    </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -34,5 +37,13 @@
     <ClInclude Include="Utilities.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GameTile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Tile.xcf">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -4,17 +4,20 @@
 #include <SDL_ttf.h>
 #include <SDL_image.h>
 #include "Utilities.h"
+#include "GameTile.h"
 
-constexpr auto WINDOW_WIDTH = 502;
+constexpr auto WINDOW_WIDTH = 500;
 constexpr auto WINDOW_HEIGHT = 560;
 constexpr auto GAME_WIDTH = 10;
 constexpr auto GAME_HEIGHT = 20;
 constexpr auto TILE_SIZE = 25;
 
 SDL_Texture* backTexture;
+SDL_Texture* tileTexture;
 SDL_Rect* gameArea;
 SDL_Rect* nextPieceArea;
 SDL_Rect* scoreArea;
+std::vector<GameTile*>* gameTiles;
 
 bool init()
 {
@@ -71,6 +74,18 @@ void Render(SDL_Renderer* renderer, SDL_Rect* screen)
 	SDL_RenderFillRect(renderer, nextPieceArea);
 	SDL_RenderFillRect(renderer, scoreArea);
 
+	// Draw each tile.
+	for (auto it = gameTiles->begin(); it < gameTiles->end(); it++)
+	{
+		GameTile* tile = *it;
+		int x = gameArea->x + (tile->x * TILE_SIZE);
+		int y = gameArea->y + ((GAME_HEIGHT - tile->y - 1) * TILE_SIZE);
+
+		// TODO: Add multiple colours specific to each tile.
+		SDL_Rect* rect = new SDL_Rect({ x, y, TILE_SIZE, TILE_SIZE });
+		SDL_RenderCopy(renderer, tileTexture, NULL, rect);
+	}
+
 	SDL_RenderPresent(renderer);
 }
 
@@ -92,10 +107,15 @@ int main(int argc, char* argv[])
 	SDL_Colour baseColour{ 33, 33, 40, 255 };
 	backTexture = DrawGradient(renderer, &baseColour, WINDOW_WIDTH, WINDOW_HEIGHT, 0.6, 2);
 
+	// Load Assets.
+	SDL_Surface* tileSurface = IMG_Load("Tile.png");
+	tileTexture = SDL_CreateTextureFromSurface(renderer, tileSurface);
+
 	// UI Specifications.
 	gameArea = new SDL_Rect({ 30, 30, TILE_SIZE * GAME_WIDTH, TILE_SIZE * GAME_HEIGHT });
-	nextPieceArea = new SDL_Rect({ 310, 30, 162, 162 });
-	scoreArea = new SDL_Rect({ 310, 222, 162, 50 });
+	nextPieceArea = new SDL_Rect({ 310, 30, 160, 160 });
+	scoreArea = new SDL_Rect({ 310, 220, 160, 50 });
+	gameTiles = new std::vector<GameTile*>();
 
 	bool isRunning = true;
 
