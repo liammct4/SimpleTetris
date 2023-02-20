@@ -5,10 +5,19 @@
 #include "Utilities.h"
 #include "PieceType.h"
 
-void Piece::Move(int x, int y)
+bool Piece::Move(int x, int y)
 {
-	// TODO: Add collision.
-	// TODO: Add out of bounds checking.
+	// TODO: Add collision checking.
+	for (auto it = tiles->begin(); it < tiles->end(); it++)
+	{
+		GameTile* tile = *it;
+
+		if (!IsInbetween(tile->x + x, 0, GAME_WIDTH) || !IsInbetween(tile->y + y, 0, GAME_HEIGHT))
+		{
+			return false;
+		}
+	}
+
 	for (auto it = tiles->begin(); it < tiles->end(); it++)
 	{
 		GameTile* tile = *it;
@@ -16,6 +25,8 @@ void Piece::Move(int x, int y)
 		tile->x += x;
 		tile->y += y;
 	}
+
+	return true;
 }
 
 Piece* Piece::GetPiece(PieceType pieceType, int x, int y)

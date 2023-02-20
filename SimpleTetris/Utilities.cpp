@@ -44,3 +44,8 @@ int ResolveToRange(int value, int start, int end)
 		return value;
 	}
 }
+
+bool IsInbetween(int value, int start, int end)
+{
+	return value >= start && value < end;
+}

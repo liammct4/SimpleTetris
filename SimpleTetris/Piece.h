@@ -19,8 +19,22 @@ private:
 
 public:
 	std::vector<GameTile*>* tiles;
-	void Move(int x, int y);
 
+	/// <summary>
+	/// Moves this by by a certain amount horizontally and vertically.
+	/// </summary>
+	/// <param name="x">The number to move the piece horizontally by.</param>
+	/// <param name="y">The number to move the piece vertically by.</param>
+	/// <returns>True if the piece was moved successfuly, otherwise false (out of bounds or colliding with other tiles.)</returns>
+	bool Move(int x, int y);
+
+	/// <summary>
+	/// Builds a new piece according to the piece type given.
+	/// </summary>
+	/// <param name="pieceType">The type of piece to build.</param>
+	/// <param name="x">Where the new piece will be placed horizontally.</param>
+	/// <param name="y">Where the new piece will be placed vertically.</param>
+	/// <returns>A new piece.</returns>
 	static Piece* GetPiece(PieceType pieceType, int x, int y);
 };
 

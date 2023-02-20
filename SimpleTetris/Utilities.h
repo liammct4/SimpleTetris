@@ -27,3 +27,12 @@ long long GetTimeInMilliseconds();
 /// <param name="end">The maximum allowed.</param>
 /// <returns>Returns a value between a range.</returns>
 int ResolveToRange(int value, int start, int end);
+
+/// <summary>
+/// Determines if a number is in between two other numbers.
+/// </summary>
+/// <param name="value">The value to compare.</param>
+/// <param name="start">The minimum bound.</param>
+/// <param name="end">The maximum bound.</param>
+/// <returns>True if the number is inbetween the start and end, otherwise false.</returns>
+bool IsInbetween(int value, int start, int end);
