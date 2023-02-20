@@ -46,7 +46,7 @@ bool init()
 	return true;
 }
 
-void HandleEvents(bool* isRunning)
+void HandleEvents(bool* isRunning, bool* isDownHeld)
 {
 	SDL_Event e;
 	SDL_PollEvent(&e);
@@ -55,6 +55,27 @@ void HandleEvents(bool* isRunning)
 	{
 		case SDL_QUIT:
 			*isRunning = false;
+			break;
+		case SDL_KEYDOWN:
+			// TODO: Add bindable keys.
+			if (e.key.keysym.sym == SDLK_LEFT || e.key.keysym.scancode == SDL_SCANCODE_A)
+			{
+				currentPiece->Move(-1, 0);
+			}
+			else if (e.key.keysym.sym == SDLK_RIGHT || e.key.keysym.scancode == SDL_SCANCODE_D)
+			{
+				currentPiece->Move(1, 0);
+			}
+			else if (e.key.keysym.sym == SDLK_DOWN || e.key.keysym.scancode == SDL_SCANCODE_S)
+			{
+				*isDownHeld = true;
+			}
+			break;
+		case SDL_KEYUP:
+			if (e.key.keysym.sym == SDLK_DOWN || e.key.keysym.scancode == SDL_SCANCODE_S)
+			{
+				*isDownHeld = false;
+			}
 			break;
 	}
 }
@@ -105,6 +126,8 @@ int main(int argc, char* argv[])
 		std::cin.get();
 	}
 
+	bool isDownHeld = false;
+
 	// Create Window.
 	SDL_Window* window = SDL_CreateWindow("Tetris", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WINDOW_WIDTH, WINDOW_HEIGHT, SDL_WINDOW_ALLOW_HIGHDPI);
 	SDL_Renderer* renderer = SDL_CreateRenderer(window, NULL, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
@@ -132,7 +155,7 @@ int main(int argc, char* argv[])
 
 	while (isRunning)
 	{
-		HandleEvents(&isRunning);
+		HandleEvents(&isRunning, &isDownHeld);
 
 		Render(renderer, screen);
 
@@ -142,8 +165,14 @@ int main(int argc, char* argv[])
 		if (currentTime >= nextMoveTime)
 		{
 			currentPiece->Move(0, 1);
+			int interval = MOVE_INTERVAL;
 
-			nextMoveTime = GetTimeInMilliseconds() + MOVE_INTERVAL;
+			if (isDownHeld)
+			{
+				interval = interval / 15;
+			}
+			
+			nextMoveTime = GetTimeInMilliseconds() + interval;
 		}
 	}
 

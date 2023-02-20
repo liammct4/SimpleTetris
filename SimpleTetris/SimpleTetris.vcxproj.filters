@@ -55,6 +55,9 @@
     <ClInclude Include="PieceType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RectangleI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Tile.xcf">

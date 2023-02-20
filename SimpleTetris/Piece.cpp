@@ -4,6 +4,7 @@
 #include "Source.h"
 #include "Utilities.h"
 #include "PieceType.h"
+#include "RectangleI.h"
 
 bool Piece::Move(int x, int y)
 {
@@ -27,6 +28,23 @@ bool Piece::Move(int x, int y)
 	}
 
 	return true;
+}
+
+RectangleI Piece::GetDimensions()
+{
+	int minX = INT_MAX, minY = INT_MAX;
+	int maxX = 0, maxY = 0;
+
+	for (auto it = tiles->begin(); it < tiles->end(); it++)
+	{
+		minX = std::min((*it)->x, minX);
+		minY = std::min((*it)->y, minY);
+
+		maxX = std::max((*it)->x, maxX);
+		maxY = std::max((*it)->y, maxY);
+	}
+
+	return { minX, minY, maxX - minX, maxY - minY };
 }
 
 Piece* Piece::GetPiece(PieceType pieceType, int x, int y)

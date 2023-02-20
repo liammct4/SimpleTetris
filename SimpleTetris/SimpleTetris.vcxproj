@@ -159,6 +159,7 @@
     <ClInclude Include="PieceType.h" />
     <ClInclude Include="Source.h" />
     <ClInclude Include="Utilities.h" />
+    <ClInclude Include="RectangleI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Tile.xcf" />
