@@ -149,11 +149,15 @@
     </CopyFileToFolders>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Piece.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Utilities.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameTile.h" />
+    <ClInclude Include="Piece.h" />
+    <ClInclude Include="PieceType.h" />
+    <ClInclude Include="Source.h" />
     <ClInclude Include="Utilities.h" />
   </ItemGroup>
   <ItemGroup>

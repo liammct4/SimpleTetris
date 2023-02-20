@@ -1,3 +1,4 @@
+#include <chrono>
 #include "Utilities.h"
 
 SDL_Texture* DrawGradient(SDL_Renderer* renderer, SDL_Colour* colour, int w, int h, double dimnessFactor, int noiseDeviance)
@@ -21,4 +22,25 @@ SDL_Texture* DrawGradient(SDL_Renderer* renderer, SDL_Colour* colour, int w, int
 	SDL_FreeSurface(surface);
 
 	return texture;
+}
+
+long long GetTimeInMilliseconds()
+{
+	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+}
+
+int ResolveToRange(int value, int start, int end)
+{
+	if (value > end)
+	{
+		return end;
+	}
+	else if (value < start)
+	{
+		return start;
+	}
+	else
+	{
+		return value;
+	}
 }

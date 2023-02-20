@@ -3,14 +3,10 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 #include <SDL_image.h>
+#include "Source.h"
 #include "Utilities.h"
 #include "GameTile.h"
-
-constexpr auto WINDOW_WIDTH = 500;
-constexpr auto WINDOW_HEIGHT = 560;
-constexpr auto GAME_WIDTH = 10;
-constexpr auto GAME_HEIGHT = 20;
-constexpr auto TILE_SIZE = 25;
+#include "Piece.h"
 
 SDL_Texture* backTexture;
 SDL_Texture* tileTexture;
@@ -18,6 +14,7 @@ SDL_Rect* gameArea;
 SDL_Rect* nextPieceArea;
 SDL_Rect* scoreArea;
 std::vector<GameTile*>* gameTiles;
+Piece* currentPiece;
 
 bool init()
 {
@@ -62,6 +59,17 @@ void HandleEvents(bool* isRunning)
 	}
 }
 
+void RenderTile(SDL_Renderer* renderer, GameTile* tile)
+{
+	int x = gameArea->x + (tile->x * TILE_SIZE);
+	int y = gameArea->y + (tile->y * TILE_SIZE);
+
+	// TODO: Add multiple colours specific to each tile.
+	SDL_Rect* rect = new SDL_Rect({ x, y, TILE_SIZE, TILE_SIZE });
+	SDL_RenderCopy(renderer, tileTexture, NULL, rect);
+}
+
+
 void Render(SDL_Renderer* renderer, SDL_Rect* screen)
 {
 	// Draw background.
@@ -77,13 +85,12 @@ void Render(SDL_Renderer* renderer, SDL_Rect* screen)
 	// Draw each tile.
 	for (auto it = gameTiles->begin(); it < gameTiles->end(); it++)
 	{
-		GameTile* tile = *it;
-		int x = gameArea->x + (tile->x * TILE_SIZE);
-		int y = gameArea->y + ((GAME_HEIGHT - tile->y - 1) * TILE_SIZE);
+		RenderTile(renderer, *it);
+	}
 
-		// TODO: Add multiple colours specific to each tile.
-		SDL_Rect* rect = new SDL_Rect({ x, y, TILE_SIZE, TILE_SIZE });
-		SDL_RenderCopy(renderer, tileTexture, NULL, rect);
+	for (auto it = currentPiece->tiles->begin(); it < currentPiece->tiles->end(); it++)
+	{
+		RenderTile(renderer, *it);
 	}
 
 	SDL_RenderPresent(renderer);
@@ -118,12 +125,26 @@ int main(int argc, char* argv[])
 	gameTiles = new std::vector<GameTile*>();
 
 	bool isRunning = true;
+	double nextMoveTime = GetTimeInMilliseconds();
+
+	// Set placeholder
+	currentPiece = Piece::GetPiece(BoxPiece, 2, 0);
 
 	while (isRunning)
 	{
 		HandleEvents(&isRunning);
 
 		Render(renderer, screen);
+
+		// Basic timer for moving.
+		auto currentTime = GetTimeInMilliseconds();
+
+		if (currentTime >= nextMoveTime)
+		{
+			currentPiece->Move(0, 1);
+
+			nextMoveTime = GetTimeInMilliseconds() + MOVE_INTERVAL;
+		}
 	}
 
 	SDL_DestroyWindow(window);
