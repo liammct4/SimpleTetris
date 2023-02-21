@@ -164,7 +164,17 @@ int main(int argc, char* argv[])
 
 		if (currentTime >= nextMoveTime)
 		{
-			currentPiece->Move(0, 1);
+			bool isCollided = !currentPiece->Move(0, 1);
+
+			if (isCollided)
+			{
+				currentPiece->CopyTiles(gameTiles);
+
+				// TODO: Implement queueing for next piece.
+				PieceType type = Piece::GetRandomPieceType();
+				currentPiece = Piece::GetPiece(type, 0, 0);
+			}
+			
 			int interval = MOVE_INTERVAL;
 
 			if (isDownHeld)

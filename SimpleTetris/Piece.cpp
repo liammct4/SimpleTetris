@@ -47,6 +47,21 @@ RectangleI Piece::GetDimensions()
 	return { minX, minY, maxX - minX, maxY - minY };
 }
 
+void Piece::CopyTiles(std::vector<GameTile*>* sourceTiles)
+{
+	for (auto it = tiles->begin(); it < tiles->end(); it++)
+	{
+		sourceTiles->push_back(*it);
+	}
+
+	tiles->clear();
+}
+
+PieceType Piece::GetRandomPieceType()
+{
+	return PieceType(rand() % 7);
+}
+
 Piece* Piece::GetPiece(PieceType pieceType, int x, int y)
 {
 	std::vector<GameTile*>* tiles = new std::vector<GameTile*>();

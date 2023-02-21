@@ -36,6 +36,18 @@ public:
 	RectangleI GetDimensions();
 
 	/// <summary>
+	/// Generates a random piece type.
+	/// </summary>
+	/// <returns>A random piece type.</returns>
+	static PieceType GetRandomPieceType();
+
+	/// <summary>
+	/// Copies and empties the current piece into another vector.
+	/// </summary>
+	/// <param name="tiles">The destination vector.</param>
+	void CopyTiles(std::vector<GameTile*>* sourceTiles);
+
+	/// <summary>
 	/// Builds a new piece according to the piece type given.
 	/// </summary>
 	/// <param name="pieceType">The type of piece to build.</param>
