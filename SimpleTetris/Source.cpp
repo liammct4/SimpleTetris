@@ -60,11 +60,11 @@ void HandleEvents(bool* isRunning, bool* isDownHeld)
 			// TODO: Add bindable keys.
 			if (e.key.keysym.sym == SDLK_LEFT || e.key.keysym.scancode == SDL_SCANCODE_A)
 			{
-				currentPiece->Move(-1, 0);
+				currentPiece->Move(gameTiles, -1, 0);
 			}
 			else if (e.key.keysym.sym == SDLK_RIGHT || e.key.keysym.scancode == SDL_SCANCODE_D)
 			{
-				currentPiece->Move(1, 0);
+				currentPiece->Move(gameTiles, 1, 0);
 			}
 			else if (e.key.keysym.sym == SDLK_DOWN || e.key.keysym.scancode == SDL_SCANCODE_S)
 			{
@@ -164,11 +164,13 @@ int main(int argc, char* argv[])
 
 		if (currentTime >= nextMoveTime)
 		{
-			bool isCollided = !currentPiece->Move(0, 1);
+			bool isCollided = !currentPiece->Move(gameTiles, 0, 1);
 
 			if (isCollided)
 			{
 				currentPiece->CopyTiles(gameTiles);
+
+				delete currentPiece;
 
 				// TODO: Implement queueing for next piece.
 				PieceType type = Piece::GetRandomPieceType();

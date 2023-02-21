@@ -6,19 +6,33 @@
 #include "PieceType.h"
 #include "RectangleI.h"
 
-bool Piece::Move(int x, int y)
+bool Piece::Move(std::vector<GameTile*>* gameTiles, int x, int y)
 {
-	// TODO: Add collision checking.
+	// Check preemptively if the piece cannot fit into the new location.
 	for (auto it = tiles->begin(); it < tiles->end(); it++)
 	{
 		GameTile* tile = *it;
 
-		if (!IsInbetween(tile->x + x, 0, GAME_WIDTH) || !IsInbetween(tile->y + y, 0, GAME_HEIGHT))
+		int newX = tile->x + x;
+		int newY = tile->y + y;
+
+		// Check if out of bounds.
+		if (!IsInbetween(newX, 0, GAME_WIDTH) || !IsInbetween(newY, 0, GAME_HEIGHT))
 		{
 			return false;
 		}
+
+		// Check if colliding with existing tiles.
+		for (auto it2 = gameTiles->begin(); it2 < gameTiles->end(); it2++)
+		{
+			if ((*it2)->x == newX && (*it2)->y == newY)
+			{
+				return false;
+			}
+		}
 	}
 
+	// Apply the changes after it is safe to move.
 	for (auto it = tiles->begin(); it < tiles->end(); it++)
 	{
 		GameTile* tile = *it;
@@ -53,8 +67,6 @@ void Piece::CopyTiles(std::vector<GameTile*>* sourceTiles)
 	{
 		sourceTiles->push_back(*it);
 	}
-
-	tiles->clear();
 }
 
 PieceType Piece::GetRandomPieceType()

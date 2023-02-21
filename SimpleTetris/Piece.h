@@ -21,13 +21,19 @@ private:
 public:
 	std::vector<GameTile*>* tiles;
 
+	~Piece()
+	{
+		this->tiles->clear();
+		delete this->tiles;
+	}
+
 	/// <summary>
 	/// Moves this by by a certain amount horizontally and vertically.
 	/// </summary>
 	/// <param name="x">The number to move the piece horizontally by.</param>
 	/// <param name="y">The number to move the piece vertically by.</param>
 	/// <returns>True if the piece was moved successfuly, otherwise false (out of bounds or colliding with other tiles.)</returns>
-	bool Move(int x, int y);
+	bool Move(std::vector<GameTile*>* sourceTiles, int x, int y);
 
 	/// <summary>
 	/// Gets the dimensions of this piece in terms of position and width/height.
@@ -42,7 +48,7 @@ public:
 	static PieceType GetRandomPieceType();
 
 	/// <summary>
-	/// Copies and empties the current piece into another vector.
+	/// Copies the current piece tiles into another vector.
 	/// </summary>
 	/// <param name="tiles">The destination vector.</param>
 	void CopyTiles(std::vector<GameTile*>* sourceTiles);
